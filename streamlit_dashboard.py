@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+# ------------------------
+# Simple Password Gate
+# ------------------------
+password = st.text_input("Enter password to access dashboard", type="password")
+if password != "@Pc1D$5s_2025!":
+    st.warning("Access Denied. Please enter the correct password.")
+    st.stop()
+
 # Load the Excel file
 df = pd.read_excel("PCI_DSS_4.0.1_Compliance_Tracker_2025.xlsx", sheet_name="PCI DSS Audit Evidences")
 
@@ -21,10 +29,10 @@ filtered_df = df[(df['Status'].isin(status_filter)) & (df['PCI DSS Reference'].i
 # Dashboard Title
 st.title("PCI DSS 4.0.1 Compliance Dashboard")
 
-# Completion Percentage
-total_items = len(filtered_df)
+# Completion Percentage Logic
 complete_statuses = ['Done', 'Done*', 'Not Applicable']
 completed_count = filtered_df['Status'].isin(complete_statuses).sum()
+total_items = len(filtered_df)
 completion_percentage = round((completed_count / total_items) * 100, 2) if total_items else 0
 
 st.metric("Completion %", f"{completion_percentage}%")
