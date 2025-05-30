@@ -23,8 +23,9 @@ st.title("PCI DSS 4.0.1 Compliance Dashboard")
 
 # Completion Percentage
 total_items = len(filtered_df)
-provided_count = filtered_df['Status'].str.lower().str.contains("provided").sum()
-completion_percentage = round((provided_count / total_items) * 100, 2) if total_items else 0
+complete_statuses = ['Done', 'Done*', 'Not Applicable']
+completed_count = filtered_df['Status'].isin(complete_statuses).sum()
+completion_percentage = round((completed_count / total_items) * 100, 2) if total_items else 0
 
 st.metric("Completion %", f"{completion_percentage}%")
 
